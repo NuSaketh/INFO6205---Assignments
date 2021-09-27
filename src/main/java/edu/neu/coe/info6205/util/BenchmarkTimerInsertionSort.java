@@ -11,100 +11,100 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 public class BenchmarkTimerInsertionSort {
-
-
-
     private static Config config;
     
-        public static Integer[] reverseSortedArrayGeneration(int k){
+    public static Integer[] reverseSortedArrayGeneration(int N){
 
-        Integer[] in = new Integer[k];
-        for(int i = 0; i<k;i++){
-            in[i] = k-i;
-        }
-        return in;
+    Integer[] in = new Integer[N];
+    for(int i = 0; i<N;i++){
+        in[i] = N-i;
     }
-      public static Integer[] sortedArrayGeneration(int k){
-
-        Integer[] in = new Integer[k];
-        for(int i = 1; i<=k;i++){
-            in[i-1] = 2*i;
-        }
-        return in;
-    }
-
-    public static Integer[] partiallySortedArrayGeneration(int k){
+    return in;
+}
 
 
-        Random rand = new Random();
-        Integer[] in = new Integer[k];
-        for (int i = 0; i<k/2; i++){
-            in[i] = i;
-        }
-
-        for (int i = k/2; i<k; i++){
-
-            in[i] =  rand.nextInt(K) + k/2;
-        }
-
-        return in;
-    }
-     public static Integer[] randomArrayGeneration(int k){
+public static Integer[] partiallySortedArrayGeneration(int N){
 
 
-        Random rand = new Random();
-        Integer[] in = new Integer[k];
-        for(int i = 0; i<K;i++){
-            in[i] = rand.nextInt(k) + 1;
-        }
-        return in;
-    }
-  
-
-   
-
-    public static void runBenchmarkTest(int K, String description, Supplier<Integer[]> supplier){
-
-        Helper<Integer> helper = new BaseHelper<>(description, k, config);
-        final GenericSort<Integer> sort = new InsertionSort<>(helper);
-        final Benchmark<Integer[]> benchmark = new Benchmark_Timer<>(
-                description ,
-                (xs) -> Arrays.copyOf(xs, xs.length),
-                sort::sort,
-                null
-
-        );
-        System.out.println(benchmark.runFromSupplier(supplier, 5) + "ms");
+    Random rand = new Random();
+    Integer[] in = new Integer[N];
+    for (int i = 0; i<N/2; i++){
+        in[i] = i;
     }
 
+    for (int i = N/2; i<N; i++){
 
-    public static void main(String[] args) {
+        in[i] =  rand.nextInt(N) + N/2;
+    }
+
+    return in;
+}
+ public static Integer[] randomArrayGeneration(int N){
 
 
-            int k = 1000;
-           
+    Random rand = new Random();
+    Integer[] in = new Integer[N];
+    for(int i = 0; i<N;i++){
+        in[i] = rand.nextInt(N) + 1;
+    }
+    return in;
+}
+ public static Integer[] sortedArrayGeneration(int N){
 
-            String description = "Insertion sort for ordered array of size: " + k;
-            Supplier<Integer[]> supplier = () -> sortedArrayGeneration(k);
-            runBenchmarkTest(k, description, supplier);
+	    Integer[] in = new Integer[N];
+	    for(int i = 1; i<=N;i++){
+	        in[i-1] = 2*i;
+	    }
+	    return in;
+	}
 
-            description = "Insertion sort for reverse-ordered array of size: " + k;
-            supplier = () -> reverseSortedArrayGeneration(k);
-            runBenchmarkTest(k, description, supplier);
 
-            description = "Insertion sort for random numbers in a array of size: " + k;
-            supplier = () -> randomArrayGeneration(k);
-            runBenchmarkTest(k, description, supplier);
 
-            description = "Insertion sort for partially - ordered array of size: " + k;
-            supplier = () -> partiallySortedArrayGeneration(k);
-            runBenchmarkTest(k, description, supplier);
+public static void runBenchmarkTest(int N, String description, Supplier<Integer[]> supplier){
 
+    Helper<Integer> helper = new BaseHelper<>(description, N, config);
+    final GenericSort<Integer> sort = new InsertionSort<>(helper);
+    final Benchmark<Integer[]> benchmark = new Benchmark_Timer<>(
+            description ,
+            (xs) -> Arrays.copyOf(xs, xs.length),
+            sort::sort,
+            null
+
+    );
+    System.out.println(benchmark.runFromSupplier(supplier, 5) + "ms");
+}
+
+
+public static void main(String[] args) {
+
+
+        int N = 1000;
+       
+
+        String description = "Insertion sort for ordered array of size: " + N;
+        Supplier<Integer[]> supplier = () -> sortedArrayGeneration(N);
+        runBenchmarkTest(N, description, supplier);
         
+        description = "Insertion sort for partially - ordered array of size: " + N;
+        supplier = () -> partiallySortedArrayGeneration(N);
+        runBenchmarkTest(N, description, supplier);
+        
+        description = "Insertion sort for random numbers in a array of size: " + N;
+        supplier = () -> randomArrayGeneration(N);
+        runBenchmarkTest(N, description, supplier);
 
-  
-    }
 
 
+        description = "Insertion sort for reverse-ordered array of size: " + N;
+        supplier = () -> reverseSortedArrayGeneration(N);
+        runBenchmarkTest(N, description, supplier);
+
+       
+        
+    
+
+
+}
+	
 
 }
